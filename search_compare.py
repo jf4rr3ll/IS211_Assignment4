@@ -18,7 +18,7 @@ def sequential_search(a_list, item):
             pos = pos+1
 
     end = time.time()
-    return found, 'This function took ' + str('%.10f' % int(end-start)) + ' seconds to run.'
+    return found, 'This function took ' + str('%.10f' % (end-start)) + ' seconds to run.'
 
 test_list = [1,2,3,4,5,6,7,8,9]
 print(sequential_search(test_list, 3))
@@ -64,17 +64,29 @@ def binary_search_iterative(a_list, item):
     return found, 'This function took ' + str('%.10f' % int(end - start)) + ' seconds to run.'
 
 
-def binary_search_recursive():
+def binary_search_recursive(a_list, item):
     start = time.time()
+    if len(a_list) == 0:
+        end = time.time()
+        return False, end - start
+    else:
+        midpoint = len(a_list) // 2
+        if a_list[midpoint] == item:
+            end = time.time()
+            return True, end - start
+        else:
+            if item < a_list[midpoint]:
+                end = time.time()
+                return binary_search_recursive(a_list[:midpoint], item)
+            else:
+                end = time.time()
+                return binary_search_recursive(a_list[midpoint + 1:], item)
 
-    end = time.time()
-
-    return found, 'This function took ' + str('%.10f' % int(end - start)) + ' seconds to run.'
-
-my_randoms = []
-for i in range (500):
-    my_randoms.append(random.randrange(1,500,1))
-print my_randoms
+def random_lists():
+    my_randoms = []
+    for i in range (500):
+        my_randoms.append(random.randrange(1,500,1))
+    return my_randoms
 
 print(sequential_search(my_randoms, -1))
 print(ordered_sequential_search(my_randoms, -1))
