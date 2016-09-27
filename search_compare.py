@@ -18,11 +18,8 @@ def sequential_search(a_list, item):
             pos = pos+1
 
     end = time.time()
-    return found, 'This function took ' + str('%.10f' % (end-start)) + ' seconds to run.'
+    return found, end - start
 
-test_list = [1,2,3,4,5,6,7,8,9]
-print(sequential_search(test_list, 3))
-print(sequential_search(test_list, 13))
 
 def ordered_sequential_search(a_list, item):
     start = time.time()
@@ -37,11 +34,7 @@ def ordered_sequential_search(a_list, item):
             else:
                 pos = pos + 1
     end = time.time()
-    return found, 'This function took ' + str('%.10f' % int(end-start)) + ' seconds to run.'
-
-test_list = [0, 1, 2, 8, 13, 17, 19, 32, 42, ]
-print(ordered_sequential_search(test_list, 3))
-print(ordered_sequential_search(test_list, 13))
+    return found, end - start
 
 
 def binary_search_iterative(a_list, item):
@@ -60,8 +53,7 @@ def binary_search_iterative(a_list, item):
             else:
                 first = midpoint + 1
     end = time.time()
-
-    return found, 'This function took ' + str('%.10f' % int(end - start)) + ' seconds to run.'
+    return found, end - start
 
 
 def binary_search_recursive(a_list, item):
@@ -82,11 +74,34 @@ def binary_search_recursive(a_list, item):
                 end = time.time()
                 return binary_search_recursive(a_list[midpoint + 1:], item)
 
-def random_lists():
+def random_lists(listsize):
     my_randoms = []
-    for i in range (500):
-        my_randoms.append(random.randrange(1,500,1))
+    for i in range(listsize):
+        my_randoms.append(random.randrange(1,listsize))
     return my_randoms
 
-print(sequential_search(my_randoms, -1))
-print(ordered_sequential_search(my_randoms, -1))
+
+def main():
+    timed_lists = [500, 1000, 10000, 50000, 100000]
+
+    for i in timed_lists:
+        sequential_search_time = 0
+        ordered_seq_search_time = 0
+        binary_iterative_search_time = 0
+        binary_recursive_search_time = 0
+        counter = 100
+        test_list = random_lists(i)
+        while counter > 0:
+            sequential_search_time += sequential_search(test_list, -1)[0]
+            ordered_seq_search_time += ordered_sequential_search(test_list, -1)[0]
+            binary_iterative_search_time += binary_search_iterative(test_list, -1)[0]
+            binary_recursive_search_time += binary_search_recursive(test_list, -1)[0]
+            counter -= 1
+        print 'List Length: ' + str(i)
+        print ('The sequential search took %10.9f' % (sequential_search_time / 100) + ' to run, on average')
+        print ('The ordered sequential search took %10.9f' % (ordered_seq_search_time / 100) + ' to run, on average')
+        print ('The iterative binary search took %10.9f' % (binary_iterative_search_time / 100) + ' to run, on average')
+        print ('The recursive binary search took %10.9f' % (binary_recursive_search_time / 100) + ' to run, on average')
+
+if __name__ == '__main__':
+    main()
